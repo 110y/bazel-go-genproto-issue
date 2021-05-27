@@ -1,0 +1,34 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/110y/bazel-go-genproto-issue
+# gazelle:proto disable_global
+gazelle(name = "gazelle")
+
+go_library(
+    name = "lib",
+    srcs = ["main.go"],
+    importpath = "github.com/110y/bazel-go-genproto-issue",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@com_google_cloud_go_spanner//:spanner",
+        "@org_golang_google_genproto//googleapis/spanner/admin/database/v1:database",
+    ],
+)
+
+go_binary(
+    name = "bazel-go-genproto-issue",
+    embed = [":bazel-go-genproto-issue_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "bazel-go-genproto-issue_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/110y/bazel-go-genproto-issue",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@com_google_cloud_go_spanner//:spanner",
+        "@org_golang_google_genproto//googleapis/spanner/admin/database/v1:database",
+    ],
+)
